@@ -1,27 +1,89 @@
-# Tryangular19
+# Try Angular 19
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.6.
+This project built with:
+- Ant Design;
+- Internationalization;
+- Multiple themes (by Ant Design);
+- ESLint;
+- Unit Tests with code coverage;
+- Eanble HttpClient with service;
+- Multiple environments;
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Steps for this  project
 
-## Code scaffolding
+List out the steps have done within this project:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. Use UI library: `ng-zorro-antd`, official [documentation](https://ng.ant.design/).
 
-## Build
+2. Add `@jsverse/transloco` for internatinoalization. Package interface [linkage](https://www.npmjs.com/package/@jsverse/transloco).
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run command `ng add @jsverse/transloco`.
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+3. Enabling multiple themes, according to [documentation](https://ng.ant.design/docs/customize-theme/en#theme-dynamic-switching). The example repository in [URL](https://github.com/yangjunhan/nz-themes).
 
-## Running end-to-end tests
+Command:   
+```
+ng generate service services\Theme
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+4. Enabling **eslint** by using [angular-eslint](https://github.com/angular-eslint/angular-eslint).
 
-## Further help
+```
+ng add angular-eslint
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Then:   
+```
+ng g angular-eslint:add-eslint-to-project
+```
+
+5. Enable unit test by using `karma`.
+
+Command: `ng test --code-coverage`.
+
+6. Enable multiple environments.
+
+Command:   
+```
+ng generate environments
+```
+
+## Issues and solutions
+
+### Run test with `NullInjectorError: No provider for ActivatedRoute!`
+
+Add `provideRouter` into the testing module.
+
+```typescript
+await TestBed.configureTestingModule({
+    imports: [        
+        AppComponent
+    ],
+    providers: [
+        provideRouter([]),
+        provideNzIcons(icons), 
+        provideNzI18n(en_US),
+        provideNoopAnimations(),
+    ]
+}).compileComponents();
+
+```
+
+### [@ant-design/icons-angular]: the icon XXXX does not exist or is not registered. 
+
+Add the missing icon XXXX into file `icons-provider.ts` and ensure `provideNzIcons`.
+
+### Test Service based on HttpClient
+
+[Test HttpClient](https://angular.dev/guide/http/testing)
+
+### Failed to fetch file in `assets\` folder
+
+Add `"src/assets"` into `angular.json` file under `assets` node.
+
+
+### Test with Transloco 
+
+[Adding Unit Test with Transloco](https://jsverse.gitbook.io/transloco/advanced-topics/unit-testing)
