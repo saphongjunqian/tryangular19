@@ -13,6 +13,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { ThemeService } from './services/theme.service';
 import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@jsverse/transloco';
+import { provideAuth, LogLevel } from 'angular-auth-oidc-client';
 
 registerLocaleData(en);
 
@@ -38,6 +39,19 @@ export const appConfig: ApplicationConfig = {
         prodMode: !isDevMode(),
       },
       loader: TranslocoHttpLoader
-    })
+    }),
+    provideAuth({
+      config: {
+        authority: '<your authority address here>',
+        redirectUrl: window.location.origin,
+        postLogoutRedirectUri: window.location.origin,
+        clientId: '<your clientId>',
+        scope: 'openid profile email offline_access',
+        responseType: 'code',
+        silentRenew: true,
+        useRefreshToken: true,
+        logLevel: LogLevel.Debug,
+      },
+    }),    
   ]
 };
